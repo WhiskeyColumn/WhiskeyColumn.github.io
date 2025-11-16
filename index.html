@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Monaco Playground - WhiskeyColumn</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #1e1e1e;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Watermark samar */
+    #watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 160px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.05); /* samar */
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #editor {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 10; /* editor di atas watermark */
+    }
+  </style>
+</head>
+<body>
+
+<div id="watermark">WhiskeyColumn</div>
+<div id="editor"></div>
+
+<script src="https://unpkg.com/monaco-editor@0.39.0/min/vs/loader.js"></script>
+
+<script>
+  require.config({
+    paths: { 'vs': 'https://unpkg.com/monaco-editor@0.39.0/min/vs' }
+  });
+
+  // Fix worker untuk GitHub Pages
+  window.MonacoEnvironment = {
+    getWorkerUrl: function () {
+      const worker = 'https://unpkg.com/monaco-editor@0.39.0/min/vs/base/worker/workerMain.js';
+      return 'data:text/javascript;charset=utf-8,' + encodeURIComponent(`importScripts("${worker}");`);
+    }
+  };
+
+  require(["vs/editor/editor.main"], function() {
+    monaco.editor.create(document.getElementById("editor"), {
+      value: "",
+      language: "javascript",
+      theme: "vs-dark",
+      automaticLayout: true,
+      fontSize: 16
+    });
+  });
+</script>
+
+</body>
+</html>
